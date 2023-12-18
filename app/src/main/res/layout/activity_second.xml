@@ -23,21 +23,23 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="5dp"
                 android:layout_marginLeft="10dp"
-                android:text="Home"
+                android:text="Favorite"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp"
                 android:textStyle="bold"
                 android:layout_weight="2"/>
 
 
-            <ImageButton
-                android:id="@+id/buttonInfo"
+            <TextView
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/info"
-                app:cornerRadius="5dp"
-                android:backgroundTint="#0099FF"
-                app:tint="#FFFFFF" />
+                android:paddingVertical="5dp"
+                android:text="0"
+                android:textColor="#FFFFFF"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:layout_marginRight="20dp"/>
 
         </LinearLayout>
 
@@ -75,11 +77,10 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="5dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:layout_marginBottom="5dp"/>
 
         <View
             android:layout_width="match_parent"
@@ -106,9 +107,9 @@
                     android:text="Home"
                     android:drawableTop="@drawable/home"
                     android:textSize="15dp"
-                    android:textColor="#0099FF"
+                    android:textColor="#56595C"
                     app:cornerRadius="5dp"
-                    android:drawableTint="#0099FF"/>
+                    android:drawableTint="#56595C"/>
 
                 <Button
                     android:id="@+id/buttonFavorite"
@@ -119,9 +120,9 @@
                     android:text="Favorite"
                     android:drawableTop="@drawable/starfilled"
                     android:textSize="15sp"
-                    android:textColor="#56595C"
+                    android:textColor="#0099FF"
                     app:cornerRadius="5dp"
-                    android:drawableTint="#56595C" />
+                    android:drawableTint="#0099FF" />
             </LinearLayout>
         </LinearLayout>
 

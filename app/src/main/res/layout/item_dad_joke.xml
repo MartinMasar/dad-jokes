@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:id="@+id/textJoke"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView" />
+
+        <ImageButton
+            android:id="@+id/buttonStar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="#0099FF"
+            android:src="@drawable/starfilled"
+            app:cornerRadius="5dp"
+            app:tint="#FFFFFF" />
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#56595C" />
+
+</LinearLayout>
