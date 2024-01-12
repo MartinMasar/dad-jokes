@@ -26,12 +26,13 @@
             android:backgroundTint="#0099FF"
             android:src="@drawable/starfilled"
             app:cornerRadius="5dp"
-            app:tint="#FFFFFF" />
+            app:tint="#FFFFFF"
+            android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#56595C" />
+        android:background="#6D6F71" />
 
 </LinearLayout>

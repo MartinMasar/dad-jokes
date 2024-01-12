@@ -1,33 +1,38 @@
 package com.example.dadjokes
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dadjokes.databinding.ItemDadJokeBinding
 import com.example.dadjokes.model.DadJokes
 
-class JokeAdapter(private val supplierList: List<DadJokes>) :
-    RecyclerView.Adapter<JokeAdapter.ViewHolder>() {
+class JokeAdapter : ListAdapter<DadJokes, JokeAdapter.ViewHolder>(DadJokesDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_dad_joke, parent, false)
-        return ViewHolder(view)
+        val binding = ItemDadJokeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val supplier = supplierList[position]
-        holder.supplierNameTextView.text = supplier.joke
-        //holder.supplierDescriptionTextView.text = supplier.description
+        val joke = getItem(position)
+        holder.bind(joke)
     }
 
-    override fun getItemCount(): Int {
-        return supplierList.size
+    inner class ViewHolder(private val binding: ItemDadJokeBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(joke: DadJokes) {
+            binding.textJoke.text = joke.joke
+        }
+    }
+}
+
+class DadJokesDiffCallback : DiffUtil.ItemCallback<DadJokes>() {
+    override fun areItemsTheSame(oldItem: DadJokes, newItem: DadJokes): Boolean {
+        return oldItem.joke == newItem.joke
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val supplierNameTextView: TextView = itemView.findViewById(R.id.textJoke)
-        //val supplierDescriptionTextView: TextView = itemView.findViewById(R.id.supplierDescription)
+    override fun areContentsTheSame(oldItem: DadJokes, newItem: DadJokes): Boolean {
+        return oldItem == newItem
     }
 }
