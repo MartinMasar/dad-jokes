@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.example.dadjokes.database.JokeEntity
 import com.example.dadjokes.model.DadJokes
 import com.example.dadjokes.model.JokeItem
 import com.example.dadjokes.model.JokesResponse
@@ -14,7 +15,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val repository: Repository
+    private val apiRepository: APIRepository,
+    private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
     private val _jokesResponseValue = MutableLiveData<JokesResponse>()
     val jokesResponseValue: LiveData<JokesResponse> = _jokesResponseValue
@@ -26,9 +28,13 @@ class MainViewModel(
         response?.results?.map { DadJokes(it.joke) } ?: emptyList()
     }
 
+    private val _favoriteJokeList = MutableLiveData<List<DadJokes>>()
+    val favoriteJokeList: LiveData<List<DadJokes>> = _favoriteJokeList
+
+
     fun getRandomJoke() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getRandomJoke()
+            val result = apiRepository.getRandomJoke()
             //_jokes.postValue(result)
 
             /*if(result == null){
@@ -70,7 +76,7 @@ class MainViewModel(
 
     fun getJokeByWord(input: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = repository.getJokeByWord(input)
+            val result = apiRepository.getJokeByWord(input)
             _jokesResponseValue.postValue(result)
         }
     }
@@ -78,7 +84,7 @@ class MainViewModel(
     fun getJokeByWordAndPage(input: String, page: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             // Fetch the new data
-            val result = repository.getJokeByWordAndPage(input, page)
+            val result = apiRepository.getJokeByWordAndPage(input, page)
 
             // Get the existing value
             val currentValue = _jokesResponseValue.value
@@ -102,5 +108,50 @@ class MainViewModel(
             }
         }
     }
+
+    fun addToFavorites(joke: DadJokes) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val jokeEntity = JokeEntity(joke = joke.joke)
+            databaseRepository.addToFavorites(jokeEntity)
+        }
+    }
+
+    private fun updateFavoriteJokesList(jokes: List<JokeEntity>) {
+        // Process the result and convert it to JokeItem
+        val convertedJokes = jokes.map { DadJokes(joke = it.joke) }
+        _favoriteJokeList.postValue(convertedJokes)
+    }
+
+    fun getAllSavedJokes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = databaseRepository.getAllSavedJokes()
+            result.collect { jokes ->
+                updateFavoriteJokesList(jokes)
+            }
+        }
+    }
+
+    fun getSavedJokeByWord(searchTerm: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            if(searchTerm==""){
+                val result = databaseRepository.getAllSavedJokes()
+                result.collect { jokes ->
+                    updateFavoriteJokesList(jokes)
+                }
+            }
+            else{
+                val result = databaseRepository.getSavedJokeByWord(searchTerm)
+                result.collect { jokes ->
+                    updateFavoriteJokesList(jokes)
+                }
+            }
+        }
+    }
+
+    fun isJokeSaved(joke: DadJokes): Boolean {
+        return favoriteJokeList.value?.any { it.joke == joke.joke } == true
+    }
+
+
 
 }

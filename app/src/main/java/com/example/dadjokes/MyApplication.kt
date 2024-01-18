@@ -2,9 +2,9 @@ package com.example.dadjokes
 
 import android.app.Application
 import com.example.dadjokes.api.JokesApiService
+import com.example.dadjokes.database.getDatabase
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 
 class MyApplication : Application() {
     val apiService: JokesApiService by lazy {
@@ -17,8 +17,12 @@ class MyApplication : Application() {
         retrofit.create(JokesApiService::class.java)
     }
 
-    val repository: Repository by lazy {
-        Repository(apiService)
+    val apiRepository: APIRepository by lazy {
+        APIRepository(apiService)
+    }
+
+    val databaseRepository: DatabaseRepository by lazy {
+        DatabaseRepository(getDatabase(this).jokeDao)
     }
 
     override fun onCreate() {

@@ -4,7 +4,7 @@ import com.example.dadjokes.api.JokesApiService
 import com.example.dadjokes.model.JokesResponse
 import com.example.dadjokes.model.JokeItem
 
-class Repository (private val apiService: JokesApiService){
+class APIRepository (private val apiService: JokesApiService){
 
     suspend fun getRandomJoke () : JokeItem? {
         val response = apiService.getRandomJoke()

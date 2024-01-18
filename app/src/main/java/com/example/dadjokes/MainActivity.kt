@@ -1,8 +1,8 @@
 package com.example.dadjokes
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.adapters.ViewBindingAdapter.setClickListener
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,11 +31,11 @@ class MainActivity : AppCompatActivity() {
         //binding.txtLabel.text = "Hello UTB"
 
         val app = application as MyApplication
-        viewModel = ViewModelProvider(this, JokesViewModelFactory(app.repository))
+        viewModel = ViewModelProvider(this, JokesViewModelFactory(app.apiRepository, app.databaseRepository))
             .get(MainViewModel::class.java)
 
         //val supplierList = generateData()
-        adapter = JokeAdapter()
+        adapter = JokeAdapter(viewModel)
         recyclerView.adapter = adapter
 
         binding.viewModel = viewModel
@@ -45,6 +45,8 @@ class MainActivity : AppCompatActivity() {
             // Update the RecyclerView adapter with the new data
             adapter.submitList(jokes)
         })
+
+        viewModel.getAllSavedJokes()
 
         //?.jokeList?.observe(this,updateObserver)
         //observeViewModel()
@@ -89,6 +91,17 @@ class MainActivity : AppCompatActivity() {
                 //recyclerView.adapter = adapter
             }
         }
+
+        binding.buttonFavorite.setOnClickListener {
+            // Create an Intent to start the FavoriteActivity (replace FavoriteActivity with the actual name of your second activity)
+            val intent = Intent(this@MainActivity, SecondActivity::class.java)
+            // Add any extra data if needed
+            // intent.putExtra("key", "value")
+            // Start the FavoriteActivity
+            startActivity(intent)
+        }
+
+
     }
 
     fun convertToDadJokes(jokesResponse: JokesResponse): List<DadJokes> {
