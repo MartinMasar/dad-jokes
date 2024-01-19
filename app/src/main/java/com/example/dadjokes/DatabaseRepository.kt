@@ -12,9 +12,9 @@ class DatabaseRepository (private val jokeDao: JokeDao){
         jokeDao.insert(jokeEntity)
     }
 
-    /*suspend fun removeFromFavorites(jokeId: String) {
-        jokeDao.deleteJoke(jokeId)
-    }*/
+    suspend fun removeFromFavorites(joke: JokeEntity) {
+        jokeDao.deleteJoke(joke)
+    }
 
     suspend fun getAllSavedJokes(): Flow<List<JokeEntity>> {
         return jokeDao.getAllSavedJokes()

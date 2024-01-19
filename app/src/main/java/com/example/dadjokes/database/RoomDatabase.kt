@@ -3,6 +3,7 @@ package com.example.dadjokes.database
 import android.content.Context
 import androidx.room.Dao
 import androidx.room.Database
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -20,6 +21,9 @@ interface JokeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert( joke: JokeEntity)
+
+    @Delete
+    suspend fun deleteJoke(joke: JokeEntity)
 }
 
 @Database(entities = [JokeEntity::class], version = 1)

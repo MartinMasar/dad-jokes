@@ -46,20 +46,17 @@ class SecondActivity : AppCompatActivity() {
 
         })
 
-
         setClickListener()
     }
 
     private fun setClickListener() {
+        Log.d("setClickListener", "Setting click listeners")
         binding.buttonHome.setOnClickListener {
             // Create an Intent to start the FavoriteActivity (replace FavoriteActivity with the actual name of your second activity)
             val intent = Intent(this@SecondActivity, MainActivity::class.java)
-            // Add any extra data if needed
-            // intent.putExtra("key", "value")
-            // Start the FavoriteActivity
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(intent)
         }
-
         binding.buttonSearch.setOnClickListener {
             val searchTerm = binding.editTextText.text.toString()
             viewModel.getSavedJokeByWord(searchTerm)

@@ -3,6 +3,8 @@ package com.example.dadjokes
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -79,25 +81,28 @@ class MainActivity : AppCompatActivity() {
                 //recyclerView.adapter = adapter
             }
             else if(searchText.length < 3){
-                //TODO: warning
                 //no more than 3 characters
+                //Toast.makeText(this, "Warning: This is a warning message.", Toast.LENGTH_SHORT).show()
+                val alertDialog = AlertDialog.Builder(this)
+                    .setTitle(title)
+                    .setMessage("Warning: There must be none orat least 3 characters to search jokes")
+                    .setPositiveButton("OK") { dialog, _ ->
+                        // Handle the OK button click if needed
+                        dialog.dismiss()
+                    }
+                    .create()
+
+                alertDialog.show()
             }
             else{
                 viewModel.getJokeByWord(searchText)
-                /*while (viewModel.jokesResponseValue.value?.current_page ?: 0 < viewModel.jokesResponseValue.value?.next_page ?: 0 && viewModel.jokesResponseValue.value?.current_page ?: 0 < 5){
-                    viewModel.getJokeByWordAndPage(searchText, viewModel.jokesResponseValue.value?.next_page ?: 0)
-                }*/
-                //adapter = BeerSupplierAdapter(supplierList)
-                //recyclerView.adapter = adapter
             }
         }
 
         binding.buttonFavorite.setOnClickListener {
             // Create an Intent to start the FavoriteActivity (replace FavoriteActivity with the actual name of your second activity)
             val intent = Intent(this@MainActivity, SecondActivity::class.java)
-            // Add any extra data if needed
-            // intent.putExtra("key", "value")
-            // Start the FavoriteActivity
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(intent)
         }
 

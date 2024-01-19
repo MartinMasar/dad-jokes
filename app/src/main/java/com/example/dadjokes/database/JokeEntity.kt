@@ -7,9 +7,9 @@ import com.example.dadjokes.model.JokeItem
 
 @Entity(tableName = "joke")
 data class JokeEntity constructor(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    //@PrimaryKey
+    //@PrimaryKey(autoGenerate = true) val id: Int = 0,
     //val id: String,
+    @PrimaryKey
     val joke: String
 ) {
     /**

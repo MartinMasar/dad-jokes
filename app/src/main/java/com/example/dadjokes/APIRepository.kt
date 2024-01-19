@@ -16,7 +16,7 @@ class APIRepository (private val apiService: JokesApiService){
         }
     }
 
-    suspend fun getJokeByWord(input: String): JokesResponse? {
+    /*suspend fun getJokeByWord(input: String): JokesResponse? {
         val response = apiService.getJokeByWord(input)
 
         return if (response.isSuccessful) {
@@ -24,7 +24,7 @@ class APIRepository (private val apiService: JokesApiService){
         } else {
             null
         }
-    }
+    }*/
 
     suspend fun getJokeByWordAndPage(input: String, page: Int): JokesResponse? {
         val response = apiService.getJokeByWordAndPage(input, page)

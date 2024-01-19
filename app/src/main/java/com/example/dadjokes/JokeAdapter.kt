@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -38,15 +39,25 @@ class JokeAdapter(private val viewModel: MainViewModel) : ListAdapter<DadJokes, 
             }
 
             starButton.setOnClickListener {
-                /*if (joke.isFavorite) {
-                    ContextCompat.getColor(itemView.context, R.color.yellow)  // Change to yellow when it is a favorite
+                if (viewModel.isJokeSaved(joke)) {
+                    val alertDialog = AlertDialog.Builder(binding.root.context)
+                        .setTitle("Delete favorite")
+                        .setMessage("Do you want to unfavorite this joke?")
+                        .setNegativeButton("No") { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .setPositiveButton("Yes") { dialog, _ ->
+                            starButton.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
+                            viewModel.removeFromFavorites(joke)
+                            dialog.dismiss()
+                        }
+                        .create()
+                    alertDialog.show()
                 } else {
-                    starButton.setColorFilter(Color.WHITE)   // Change to white when it is not a favorite
-                }*/
-                val tintColor = Color.parseColor("#FFFF00")
-
-                starButton.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
-                viewModel.addToFavorites(joke)
+                    val tintColor = Color.parseColor("#FFFF00")
+                    starButton.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
+                    viewModel.addToFavorites(joke)
+                }
 
             }
         }
