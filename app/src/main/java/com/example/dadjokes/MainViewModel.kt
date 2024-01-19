@@ -30,32 +30,35 @@ class MainViewModel(
     // Fetch a random joke from the API
     fun getRandomJoke() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = apiRepository.getRandomJoke()
-
-            if (result != null) {
-                _jokeList.postValue(listOf(DadJokes(result.joke)))
-            }
+            try {
+                val result = apiRepository.getRandomJoke()
+                if (result != null) {
+                    _jokeList.postValue(listOf(DadJokes(result.joke)))
+                }
+            } catch (e: Exception) {}
         }
     }
 
     // Fetch jokes containing a specific word from the API
     fun getJokeByWord(input: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            var result = apiRepository.getJokeByWordAndPage(input, 1)
+            try {
+                var result = apiRepository.getJokeByWordAndPage(input, 1)
 
-            if (result == null) {
-                // If no result, post an empty list
-                _jokeList.postValue(result?.results?.map { DadJokes(it.joke) } ?: emptyList())
-            } else {
-                var updatedResults =result.results
-                // Fetch additional pages of results until the last page is reached (does not fetch more then 5 pages because of words like "and" and "the")
-                while(result?.currentPage?:6<=5 && !(result?.currentPage?:0 == result?.nextPage?:0)) {
-                    result = apiRepository.getJokeByWordAndPage(input, result?.nextPage ?: 1)
-                    updatedResults += result?.results ?: emptyArray()
+                if (result == null) {
+                    // If no result, post an empty list
+                    _jokeList.postValue(result?.results?.map { DadJokes(it.joke) } ?: emptyList())
+                } else {
+                    var updatedResults =result.results
+                    // Fetch additional pages of results until the last page is reached (does not fetch more then 5 pages because of words like "and" and "the")
+                    while(result?.currentPage?:6<=5 && !(result?.currentPage?:0 == result?.nextPage?:0)) {
+                        result = apiRepository.getJokeByWordAndPage(input, result?.nextPage ?: 1)
+                        updatedResults += result?.results ?: emptyArray()
+                    }
+                    // Post the updated results to the LiveData
+                    _jokeList.postValue(updatedResults.map {DadJokes(it.joke)})
                 }
-                // Post the updated results to the LiveData
-                _jokeList.postValue(updatedResults.map {DadJokes(it.joke)})
-            }
+            } catch (e: Exception) {}
         }
     }
 
