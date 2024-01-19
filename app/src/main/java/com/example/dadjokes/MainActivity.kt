@@ -3,8 +3,11 @@ package com.example.dadjokes
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -104,6 +107,37 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, SecondActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             startActivity(intent)
+        }
+        binding.buttonInfo.setOnClickListener {
+            val infoDialogView = layoutInflater.inflate(R.layout.dialog_info, null)
+            val infoBuilder = AlertDialog.Builder(this)
+            infoBuilder.setView(infoDialogView)
+            val infoDialog = infoBuilder.create()
+
+            // Set a click listener for the close button in the information dialog
+            infoDialogView.findViewById<AppCompatImageView>(R.id.imageView).setOnClickListener {
+                infoDialog.dismiss() // Close the information dialog when the close button is clicked
+            }
+
+            infoDialogView.findViewById<Button>(R.id.buttonDeleteData).setOnClickListener {
+                val deleteDialogBuilder = AlertDialog.Builder(binding.root.context)
+                    .setTitle("Delete all favorites")
+                    .setMessage("Do you want to delete all favorite jokes?")
+                    .setNegativeButton("No") { deleteDialog, _ ->
+                        deleteDialog.dismiss()
+                    }
+                    .setPositiveButton("Yes") { deleteDialog, _ ->
+                        // Perform the delete action here
+                        viewModel.deleteAllJokes()
+                        deleteDialog.dismiss()
+                    }
+                    .create()
+                // Show the delete dialog
+                deleteDialogBuilder.show()
+            }
+
+            // Show the information dialog
+            infoDialog.show()
         }
 
 

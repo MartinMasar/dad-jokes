@@ -24,4 +24,8 @@ class DatabaseRepository (private val jokeDao: JokeDao){
         return jokeDao.getSavedJokeByWord(searchTerm)
     }
 
+    suspend fun deleteAllJokes() {
+        return jokeDao.deleteAllJokes()
+    }
+
 }

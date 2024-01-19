@@ -18,15 +18,19 @@ class MainViewModel(
     private val apiRepository: APIRepository,
     private val databaseRepository: DatabaseRepository
 ) : ViewModel() {
-    private val _jokesResponseValue = MutableLiveData<JokesResponse>()
-    val jokesResponseValue: LiveData<JokesResponse> = _jokesResponseValue
+
+    /*private val _jokesResponseValue = MutableLiveData<JokesResponse>()
+    val jokesResponseValue: LiveData<JokesResponse> = _jokesResponseValue*/
 
     //private val _jokes = MutableLiveData<JokeItem>()
     //val jokes: LiveData<JokeItem> = _jokes
 
-    val jokeList: LiveData<List<DadJokes>> = jokesResponseValue.map { response ->
+    /*val jokeList: LiveData<List<DadJokes>> = jokesResponseValue.map { response ->
         response?.results?.map { DadJokes(it.joke) } ?: emptyList()
-    }
+    }*/
+
+    private val _jokeList = MutableLiveData<List<DadJokes>>()
+    val jokeList: LiveData<List<DadJokes>> = _jokeList
 
     private val _favoriteJokeList = MutableLiveData<List<DadJokes>>()
     val favoriteJokeList: LiveData<List<DadJokes>> = _favoriteJokeList
@@ -67,12 +71,13 @@ class MainViewModel(
             }*/
 
             if (result != null) {
-                val jokesResponse = JokesResponse(
+                /*val jokesResponse = JokesResponse(
                     current_page = 1,
                     next_page = 1,
                     results = arrayOf(result)
                 )
-                _jokesResponseValue.postValue(jokesResponse)
+                _jokesResponseValue.postValue(jokesResponse)*/
+                _jokeList.postValue(listOf(DadJokes(result.joke)))
             }
         }
     }
@@ -92,7 +97,8 @@ class MainViewModel(
             Log.d("result", result.toString())
             if (result == null) {
                 // If no existing data, set the result directly
-                _jokesResponseValue.postValue(result)
+                //_jokesResponseValue.postValue(result)
+                _jokeList.postValue(result?.results?.map { DadJokes(it.joke) } ?: emptyList())
             } else {
                 var updatedResults =result.results
                 Log.d("updatedResults", updatedResults.toString())
@@ -107,16 +113,18 @@ class MainViewModel(
                     Log.d("updatedResultswhile", updatedResults.toString())
 
                 }
-                val updatedJokesResponse = JokesResponse(
+                /*val updatedJokesResponse = JokesResponse(
                     current_page = result?.current_page ?: 0,
                     next_page = result?.next_page ?: 0,
                     results = updatedResults
                 )
                 Log.d("updatedJokesResponse", updatedJokesResponse.toString())
-                Log.d("count", updatedJokesResponse.results.size.toString())
+                Log.d("count", updatedJokesResponse.results.size.toString())*/
 
                 // Post the updated value
-                _jokesResponseValue.postValue(updatedJokesResponse)
+                //_jokesResponseValue.postValue(updatedJokesResponse)
+                //_jokeList.postValue(result?.results?.map { DadJokes(it.joke) } ?: emptyList())
+                _jokeList.postValue(updatedResults.map {DadJokes(it.joke)})
             }
         }
     }
@@ -200,5 +208,11 @@ class MainViewModel(
 
     fun isJokeSaved(joke: DadJokes): Boolean {
         return favoriteJokeList.value?.any { it.joke == joke.joke } == true
+    }
+
+    fun deleteAllJokes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            databaseRepository.deleteAllJokes()
+        }
     }
 }

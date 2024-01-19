@@ -24,6 +24,9 @@ interface JokeDao {
 
     @Delete
     suspend fun deleteJoke(joke: JokeEntity)
+
+    @Query("DELETE FROM joke")
+    suspend fun deleteAllJokes()
 }
 
 @Database(entities = [JokeEntity::class], version = 1)
