@@ -125,7 +125,7 @@
                         android:layout_weight="1"
                         android:backgroundTint="#FFFFFF"
                         android:text="Favorite"
-                        android:drawableTop="@drawable/starfilled"
+                        android:drawableTop="@drawable/star"
                         android:textSize="15sp"
                         android:textColor="#56595C"
                         app:cornerRadius="5dp"

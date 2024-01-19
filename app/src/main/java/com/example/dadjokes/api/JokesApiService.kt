@@ -12,12 +12,6 @@ interface JokesApiService {
     @GET("?")
     suspend fun getRandomJoke(@Header("Accept") acceptHeader: String = "application/json"): Response<JokeItem>
 
-    /*@GET("search")
-    suspend fun getJokeByWord(
-        @Query("term") input: String,
-        @Header("Accept") acceptHeader: String = "application/json"
-    ): Response<JokesResponse>*/
-
     @GET("search")
     suspend fun getJokeByWordAndPage(
         @Query("term") input: String,

@@ -1,10 +1,8 @@
 package com.example.dadjokes
 
-import android.util.Log
 import com.example.dadjokes.database.JokeDao
 import com.example.dadjokes.database.JokeEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 
 class DatabaseRepository (private val jokeDao: JokeDao){
 

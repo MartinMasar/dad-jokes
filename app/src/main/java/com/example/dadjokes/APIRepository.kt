@@ -9,22 +9,12 @@ class APIRepository (private val apiService: JokesApiService){
     suspend fun getRandomJoke () : JokeItem? {
         val response = apiService.getRandomJoke()
 
-        if(response.isSuccessful) {
-            return response.body()
-        } else {
-            return null
-        }
-    }
-
-    /*suspend fun getJokeByWord(input: String): JokesResponse? {
-        val response = apiService.getJokeByWord(input)
-
-        return if (response.isSuccessful) {
+        return if(response.isSuccessful) {
             response.body()
         } else {
             null
         }
-    }*/
+    }
 
     suspend fun getJokeByWordAndPage(input: String, page: Int): JokesResponse? {
         val response = apiService.getJokeByWordAndPage(input, page)

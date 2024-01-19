@@ -24,7 +24,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:backgroundTint="#0099FF"
-            android:src="@drawable/starfilled"
+            android:src="@drawable/star"
             app:cornerRadius="5dp"
             app:tint="#FFFFFF"
             android:layout_gravity="center_vertical"/>

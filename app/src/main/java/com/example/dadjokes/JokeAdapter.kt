@@ -29,20 +29,19 @@ class JokeAdapter(private val viewModel: MainViewModel) : ListAdapter<DadJokes, 
 
             val starButton = binding.buttonStar
 
+            // Deciding the star color while on display
             if (viewModel.isJokeSaved(joke)) {
                 // Change star color to yellow
-                val tintColor = Color.parseColor("#FFFF00")
-                starButton.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
-            } else {
-                // Keep star color as white
-                starButton.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN)
+                starButton.setColorFilter(Color.parseColor("#FFFF00"), PorterDuff.Mode.SRC_IN)
             }
 
             starButton.setOnClickListener {
+                // Check if the joke is already saved as a favorite
                 if (viewModel.isJokeSaved(joke)) {
+                    // The joke is already saved, show a confirmation dialog for removing
                     val alertDialog = AlertDialog.Builder(binding.root.context)
                         .setTitle("Delete favorite")
-                        .setMessage("Do you want to unfavorite this joke?")
+                        .setMessage("Do you want to remove this joke from favorite?")
                         .setNegativeButton("No") { dialog, _ ->
                             dialog.dismiss()
                         }
@@ -54,11 +53,10 @@ class JokeAdapter(private val viewModel: MainViewModel) : ListAdapter<DadJokes, 
                         .create()
                     alertDialog.show()
                 } else {
-                    val tintColor = Color.parseColor("#FFFF00")
-                    starButton.setColorFilter(tintColor, PorterDuff.Mode.SRC_IN)
+                    // The joke is not saved, mark it as a favorite and update UI
                     viewModel.addToFavorites(joke)
+                    starButton.setColorFilter(Color.parseColor("#FFFF00"), PorterDuff.Mode.SRC_IN)
                 }
-
             }
         }
     }

@@ -24,8 +24,4 @@ class MyApplication : Application() {
     val databaseRepository: DatabaseRepository by lazy {
         DatabaseRepository(getDatabase(this).jokeDao)
     }
-
-    override fun onCreate() {
-        super.onCreate()
-    }
 }
