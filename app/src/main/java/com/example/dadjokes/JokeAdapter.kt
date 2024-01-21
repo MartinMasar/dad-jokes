@@ -34,6 +34,10 @@ class JokeAdapter(private val viewModel: MainViewModel) : ListAdapter<DadJokes, 
                 // Change star color to yellow
                 starButton.setColorFilter(Color.parseColor("#FFFF00"), PorterDuff.Mode.SRC_IN)
             }
+            else {
+                // Change star color to white
+                starButton.setColorFilter(Color.parseColor("#FFFFFF"), PorterDuff.Mode.SRC_IN)
+            }
 
             starButton.setOnClickListener {
                 // Check if the joke is already saved as a favorite
